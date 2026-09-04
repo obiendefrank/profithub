@@ -1,0 +1,43 @@
+.risk-disclaimer-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: var(--status-warning);
+        transform: scale(1.1);
+    }
+}
+
+.risk-disclaimer-modal {
+    &__content {
+        padding: 1.6rem 0;
+        line-height: 1.6;
+        color: var(--text-general);
+
+        p {
+            margin-bottom: 1.6rem;
+        }
+    }
+
+    &__list {
+        list-style: disc;
+        padding-left: 2.4rem;
+        margin-bottom: 1.6rem;
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &__warning {
+        font-weight: 600;
+        color: var(--status-warning);
+        padding: 1.2rem;
+        background: rgba(255, 165, 0, 0.1);
+        border-left: 4px solid var(--status-warning);
+        border-radius: 0.4rem;
+    }
+}
