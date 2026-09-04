@@ -1,7 +1,7 @@
 export const getUrlBase = (path = '') => {
     const l = window.location;
 
-    if (!/^\/(br_)/.test(l.pathname)) return path;
+    if (!/^\/(br)/.test(l.pathname)) return path;
 
     const get_path = path.startsWith('/') ? path : `/${path}`;
 
@@ -9,8 +9,10 @@ export const getUrlBase = (path = '') => {
 };
 
 export function setBotPublicPath(path: string) {
-    window.__webpack_public_path__ = '';
-    window.__webpack_public_path__ = path; // eslint-disable-line no-global-assign
+    if (typeof window !== 'undefined') {
+        window.__webpack_public_path__ = '';
+        window.__webpack_public_path__ = path; // eslint-disable-line no-global-assign
+    }
 }
 
 export const getImageLocation = (image_name: string) => `assets/images/${image_name}`;
@@ -24,7 +26,7 @@ declare global {
 }
 
 const setSurvicateUserAttributes = (country: string, type: string, creationDate: string) => {
-    if (window.Survicate) {
+    if (typeof window !== 'undefined' && window.Survicate) {
         if (country) window.Survicate.track('userCountry', country);
         if (type) window.Survicate.track('accountType', type);
         if (creationDate) window.Survicate.track('accountCreationDate', creationDate);
@@ -37,6 +39,8 @@ const setSurvicateCalledValue = (value: boolean) => {
 };
 
 const loadSurvicateScript = (callback: () => void) => {
+    if (typeof document === 'undefined') return;
+    
     const script = document.createElement('script');
     script.id = 'dbot-survicate';
     script.async = true;
@@ -52,6 +56,8 @@ const loadSurvicateScript = (callback: () => void) => {
 };
 
 const initSurvicate = () => {
+    if (typeof window === 'undefined') return;
+    
     if (initSurvicateCalled) return;
     setSurvicateCalledValue(true);
     const active_loginid = localStorage.getItem('active_loginid');
@@ -76,4 +82,7 @@ const initSurvicate = () => {
 
 export { initSurvicate, setSurvicateCalledValue };
 
-setBotPublicPath(getUrlBase('/'));
+// Only execute on client-side
+if (typeof window !== 'undefined') {
+    setBotPublicPath(getUrlBase('/'));
+}
